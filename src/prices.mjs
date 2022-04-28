@@ -25,7 +25,7 @@ function createApp(database) {
 
   function parseDate(dateString) {
     if (dateString) {
-      return new Date(dateString);
+      return Temporal.PlainDate.from(dateString);
     }
   }
 
@@ -76,14 +76,12 @@ function createApp(database) {
   }
 
   function isMonday(date) {
-    const tempDate = new Temporal.PlainDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
-    return tempDate.dayOfWeek === 1;
+    return date.dayOfWeek === 1;
   }
 
   function isHoliday(date) {
-    const tempDate = new Temporal.PlainDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
     const holidays = database.getHolidays();
-    return holidays.some(row => Temporal.PlainDate.from(row.holiday).equals(tempDate));
+    return holidays.some(row => Temporal.PlainDate.from(row.holiday).equals(date));
   }
 
   return app;
